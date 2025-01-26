@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <title>حجز المواعيد</title>
+  <style>
+
+
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      margin: 20px;
+background-color: #a3fcfe47;
+    }
+
+    h1 {
+    text-align: center;
+    color: #111010;
+    margin-bottom: 0%;
+}
+    .message {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  /*  input, button {
+      font-size: 16px;
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    } */
+  
+    .container {
+    background: #f5f5f5;
+    background-image: url(rendivo.jpg);
+    background-position: center;
+    padding: 10px 30px ;
+    border-radius: 10px;
+     width: 80%;
+opacity: 100%;
+    }
+  
+  
+    input, button {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 100%;
+    width: 100%;
+}
+
+    button {
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+   width: 30%;
+  margin-right:35%;
+    }
+button:hover {
+    background-color: #095809;
+}
+  </style>
+</head>
+<body>
+
+
+    <div class="container">
+    <h1>حجز المواعيد</h1>
+  <form id="appointment-form">
+    <label for="name">الاسم الكامل:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="id">رقم البطاقة الوطنية:</label>
+    <input type="text" id="id" required><br>
+
+    <label for="phone">رقم الهاتف:</label>
+    <input type="text" id="phone" required><br>
+
+    <label for="date">تاريخ الموعد:</label>
+    <input type="date" id="date" required><br>
+
+    <label for="time">وقت الموعد:</label>
+    <input type="time" id="time" required><br>
+
+    <button type="button" id="submit-button">حجز الموعد</button>
+  </form>
+  <div id="message" class="message"></div>
+</div>
+
+  <script>
+    // قائمة الأوقات المحجوزة مسبقاً
+    const busySlots = [
+      { date: "2025-01-26", time: "10:00" },
+      { date: "2025-01-26", time: "14:00" },
+    ];
+
+    // دالة التحقق من الموعد
+    function checkAppointment() {
+      const name = document.getElementById("name").value;
+      const id = document.getElementById("id").value;
+      const phone = document.getElementById("phone").value;
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const message = document.getElementById("message");
+
+      // تحقق من أن جميع الحقول ممتلئة
+      if (!name || !id || !phone || !date || !time) {
+        message.textContent = "❎ يرجى ملء جميع الحقول!";
+        message.className = "message error";
+        return;
+      }
+
+      // تحقق إذا كان الوقت محجوزًا
+      const isBusy = busySlots.some(slot => slot.date === date && slot.time === time);
+
+      if (isBusy) {
+        message.textContent = "❎ لقد تم رفض الموعد، الطبيب مشغول في هذا الوقت.";
+        message.className = "message error";
+      } else {
+        message.textContent = "✔️ لقد تم حجز الموعد بنجاح.";
+        message.className = "message success";
+
+        // إضافة الموعد الجديد لقائمة المواعيد المحجوزة
+        busySlots.push({ date, time });
+      }
+    }
+
+    // ربط زر "حجز الموعد" بدالة التحقق
+    document.getElementById("submit-button").addEventListener("click", checkAppointment);
+  </script>
+</body>
+</html>
